@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Peta Sebaran dan Statistik Bantuan Hukum 2025</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #f9f9f9;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .panel {
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .chart-container {
+      position: relative;
+      height: 420px;
+      width: 100%;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 8px;
+      display: none; /* disembunyikan dulu sampai loaded */
+    }
+    .map-loading {
+      position: relative;
+      height: 500px;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ddd;
+    }
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #007bff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    h2 {
+      margin-top: 25px;
+      font-weight: bold;
+      color: #0056b3;
+    }
+    .nav-tabs>li>a {
+      font-weight: bold;
+      color: #007bff;
+    }
+    .nav-tabs>li.active>a {
+      color: #000;
+    }
+    .card-summary {
+      background: linear-gradient(120deg, #007bff, #0096ff);
+      color: white;
+      padding: 40px 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .card-summary h3 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .card-summary p {
+      margin: 0;
+      font-size: 18px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center">Peta Sebaran Pos Bantuan Hukum</h2>
+  <p class="text-center">Menampilkan lokasi Pos Bantuan Hukum di seluruh wilayah Provinsi Jawa Barat tahun 2025.</p>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tabPeta">Peta Sebaran</a></li>
+        <li><a data-toggle="tab" href="#tabAnggaran">Total Anggaran</a></li>
+        <li><a data-toggle="tab" href="#tabJenisBantuan">Jenis Bantuan Hukum</a></li>
+        <li><a data-toggle="tab" href="#tabStatistik">Statistik Jenis Perkara & Kasus</a></li>
+      </ul>
+
+      <div class="tab-content" style="margin-top:20px;">
+        
+        <!-- TAB 1: PETA -->
+        <div id="tabPeta" class="tab-pane fade in active">
+          <div class="map-loading" id="mapLoader">
+            <div class="spinner"></div>
+          </div>
+          <iframe id="mapIframe" 
+            src="https://www.google.com/maps/d/embed?mid=1ywZgHfbSpm4Fdx3WN6PonuOgyOOt3Zg&ehbc=2E312F"
+            onload="hideLoader()"></iframe>
+        </div>
+
+        <!-- TAB 2: TOTAL ANGGARAN -->
+        <div id="tabAnggaran" class="tab-pane fade">
+          <div class="card-summary">
+            <p>Total Realisasi Anggaran Bantuan Hukum Tahun 2025</p>
+            <h3>Rp 2.749.027.500,-</h3>
+            <p>Sumber: Data Penerima Bantuan Hukum 2025</p>
+          </div>
+        </div>
+
+        <!-- TAB 3: JENIS BANTUAN -->
+        <div id="tabJenisBantuan" class="tab-pane fade">
+          <div class="chart-container">
+            <canvas id="chartJenisBantuan"></canvas>
+          </div>
+        </div>
+
+        <!-- TAB 4: STATISTIK JENIS PERKARA & KASUS -->
+        <div id="tabStatistik" class="tab-pane fade">
+          <div class="chart-container">
+            <canvas id="chartGabungan"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === MAP LOADING HANDLER ===
+  function hideLoader() {
+    document.getElementById("mapLoader").style.display = "none";
+    document.getElementById("mapIframe").style.display = "block";
+  }
+
+  // === DATA ASLI DARI EXCEL ===
+
+  // Jenis Bantuan Hukum
+  const dataJenisBantuan = {
+    labels: ["Litigasi (887)", "Non-Litigasi (164)"],
+    datasets: [{
+      data: [887, 164],
+      backgroundColor: ["#007bff", "#a2d2ff"]
+    }]
+  };
+
+  // Gabungan Jenis Perkara & Kasus
+  const labelsGabungan = [
+    "Pidana (501)", "Perdata (384)",
+    "Penyuluhan Hukum (74)", "Konsultasi Hukum (57)",
+    "Pemberdayaan Masyarakat (14)", "Pendampingan Di Luar Pengadilan (9)",
+    "Drafting Dokumen (8)",
+    "Perceraian Pengadilan Agama (398)", "Narkoba (267)",
+    "Perlindungan Anak (43)", "Pencurian dengan pemberatan (35)",
+    "Pencabulan/Pelecehan (27)", "Penganiayaan (22)",
+    "Pencurian (22)", "Sajam/Bahan Peledak (17)", "Persetubuhan (17)"
+  ];
+
+  const dataGabungan = [501, 384, 74, 57, 14, 9, 8, 398, 267, 43, 35, 27, 22, 22, 17, 17];
+
+  // === CHART: Jenis Bantuan Hukum ===
+  new Chart(document.getElementById("chartJenisBantuan"), {
+    type: 'doughnut',
+    data: dataJenisBantuan,
+    options: {
+      title: { display: true, text: "Distribusi Jenis Bantuan Hukum 2025" },
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  // === CHART: Statistik Jenis Perkara & Kasus ===
+  new Chart(document.getElementById("chartGabungan"), {
+    type: 'bar',
+    data: {
+      labels: labelsGabungan,
+      datasets: [{
+        label: "Jumlah Kasus / Jenis Perkara",
+        data: dataGabungan,
+        backgroundColor: [
+          "#004b8d","#007bff","#339af0","#6ea8fe","#91a7ff","#a5d8ff",
+          "#ffb703","#fb8500","#219ebc","#8ecae6","#023047","#ffd166",
+          "#ef476f","#8338ec","#3a86ff","#adb5bd"
+        ]
+      }]
+    },
+    options: {
+      title: { display: true, text: "Statistik Jenis Perkara & Kasus Tahun 2025" },
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } },
+        y: { beginAtZero: true }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+</script>
+
+</body>
+</html>
