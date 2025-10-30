@@ -161,7 +161,18 @@
           <iframe id="mapIframe" 
             src="https://www.google.com/maps/d/embed?mid=1ywZgHfbSpm4Fdx3WN6PonuOgyOOt3Zg&ehbc=2E312F"
             onload="hideLoader()"></iframe>
+
+          <!-- LINK GOOGLE SPREADSHEET -->
+          <div class="text-center" style="margin-top: 15px;">
+            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRM245t9fPtERqVp3KxtYEKOHs2m_Db8sqSnPJr6IWvowVMu1UHl4trpOMg-6Bs7Y5sdkbwk_J7-pan/pubhtml"
+              target="_blank" 
+              class="btn btn-default"
+              style="border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+              📄 Lihat Data Lengkap di Google Spreadsheet
+            </a>
+          </div>
         </div>
+
 
         <!-- TAB ANGGARAN -->
         <div id="tabAnggaran" class="tab-pane fade">
@@ -207,12 +218,12 @@
   }
 
   // === DATA ===
-  const totalAnggaran = { labels: ["2023", "2024", "2025"], data: [351150000, 364599000, 2749027500] };
-  const jenisBantuan = { labels: ["2023", "2024", "2025"], litigasi: [54, 60, 887], nonLitigasi: [138, 96, 164] };
+  const totalAnggaran = { labels: ["2023", "2024", "2025"], data: [4559931200, 4407575000, 2898427500] };
+  const jenisBantuan = { labels: ["2023", "2024", "2025"], litigasi: [1253, 1199, 857], nonLitigasi: [299, 243, 172] };
   const dataPerkaraKasus = {
-    "2023": { labels: ["Pidana - Kesehatan","Pidana - Narkoba","Perdata - Perjanjian","Penyuluhan Hukum","Konsultasi Hukum","Perdata - Sengketa Tanah","Perlindungan Anak","KDRT","Pidana - Pencurian","Perdata - Waris"], data: [55,44,39,36,33,25,22,18,15,14] },
-    "2024": { labels: ["Pidana - Narkoba","Perdata - Perjanjian","Penyuluhan Hukum","Konsultasi Hukum","Pidana - Pencurian","Perlindungan Anak","Perdata - Sengketa Tanah","KDRT","Pidana - Penganiayaan","Perdata - Waris"], data: [61,48,42,38,27,24,23,20,15,12] },
-    "2025": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Pencurian dengan pemberatan","Pencabulan/Pelecehan","Penganiayaan","Pencurian","Sajam/Bahan Peledak","Persetubuhan","Perdata - Waris"], data: [398,267,43,35,27,22,22,17,17,10] }
+    "2023": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Pencurian","Pencabulan/Pelecehan"], data: [461, 421, 103, 48, 44] },
+    "2024": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Sajam/Bahan Peledak","Penganiayaan"], data: [396, 390, 86, 61, 42] },
+    "2025": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Pencurian dengan Pemberatan","Pencabulan/Pelecehan"], data: [383, 262, 41, 34, 27] }
   };
 
   // === CHART 1: Anggaran ===
