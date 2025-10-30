@@ -12,78 +12,99 @@
   <style>
     body {
       background: #f6f8fb;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      padding-top: 60px;
+      padding-bottom: 50px;
     }
 
-    /* HEADER */
-    header {
-      background: linear-gradient(90deg, #8b0000, #b30000);
-      color: #fff;
-      padding: 20px 0;
+    /* Tombol Kembali */
+    .header-btn {
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin-bottom: 40px;
     }
-    header img {
-      width: 55px;
-      height: auto;
-      margin-right: 10px;
-    }
-    header h1 {
-      font-size: 22px;
-      margin: 5px 0;
-      font-weight: 700;
-    }
-    header h2 {
+
+    .btn-back {
+      background-color: #1f6feb;
+      color: #fff !important;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      padding: 10px 26px;
       font-size: 15px;
-      font-weight: 400;
-      margin: 0;
-      opacity: 0.9;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(31,111,235,0.25);
+      text-decoration: none;
+      display: inline-block;
     }
 
-    /* PANEL & BODY */
-    h3.section-title {
-      margin-top: 25px;
-      font-weight: 700;
-      color: #004085;
-      text-align: center;
+    .btn-back:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(31,111,235,0.35);
     }
+
+    h3.section-title {
+      font-weight: 700;
+      color: #003366;
+      text-align: center;
+      margin-top: 10px;
+    }
+
     p.lead {
-      max-width: 760px;
+      max-width: 800px;
       margin: 10px auto 25px;
       color: #555;
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 15px;
+      line-height: 1.7;
       text-align: center;
     }
+
     .panel {
-      border-radius: 12px;
       border: none;
+      border-radius: 12px;
       background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     }
+
     .chart-container {
       position: relative;
       height: 420px;
       width: 100%;
     }
 
-    /* MAP & LOADER */
+    .nav-tabs>li>a {
+      font-weight: 600;
+      color: #1f6feb;
+      transition: 0.3s;
+    }
+
+    .nav-tabs>li.active>a,
+    .nav-tabs>li>a:hover {
+      color: #000;
+      border: none;
+      border-bottom: 3px solid #1f6feb;
+      background: none;
+    }
+
     iframe {
       width: 100%;
       height: 480px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       display: none;
     }
+
     .map-loading {
       height: 480px;
-      border-radius: 8px;
-      background: #fefefe;
+      border-radius: 10px;
+      background: #fafafa;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1px solid #e0e0e0;
     }
+
     .spinner {
       border: 6px solid #e0e0e0;
       border-top: 6px solid #007bff;
@@ -92,38 +113,21 @@
       height: 50px;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
 
-    /* TABS */
-    .nav-tabs>li>a {
-      font-weight: 600;
-      color: #007bff;
-    }
-    .nav-tabs>li.active>a {
-      color: #000;
-      border: none;
-      border-bottom: 3px solid #007bff;
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* FOOTER */
     footer {
       background: #f1f1f1;
       color: #555;
       text-align: center;
-      padding: 15px 10px;
+      padding: 15px;
       margin-top: 40px;
       font-size: 14px;
       border-top: 1px solid #ddd;
     }
 
     @media (max-width: 768px) {
-      header h1 { font-size: 18px; }
-      header h2 { font-size: 13px; }
       .chart-container { height: 320px; }
-      iframe, .map-loading { height: 350px; }
       .nav-tabs>li>a { font-size: 13px; }
     }
   </style>
@@ -131,16 +135,18 @@
 
 <body>
 
-<!-- HEADER -->
+<!-- Tombol Kembali -->
+<div class="header-btn">
+  <a href="../" class="btn-back">← Kembali ke Beranda</a>
+</div>
 
-
-<!-- CONTENT -->
+<!-- Konten -->
 <div class="container">
   <h3 class="section-title">Peta Sebaran dan Statistik Bantuan Hukum</h3>
   <p class="lead">
     Dashboard ini menyajikan data persebaran Pos Bantuan Hukum serta statistik pelaksanaan bantuan hukum 
-    di wilayah Jawa Barat selama periode tahun 2023 hingga 2025. Informasi mencakup total anggaran, jenis bantuan, 
-    serta jenis perkara dan kasus yang ditangani oleh lembaga bantuan hukum.
+    di wilayah Jawa Barat selama periode 2023–2025. Informasi mencakup total anggaran, jenis bantuan, 
+    jenis perkara dan kasus, serta status verifikasi laporan.
   </p>
 
   <div class="panel panel-default">
@@ -149,12 +155,13 @@
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#tabPeta">🗺️ Peta Sebaran</a></li>
         <li><a data-toggle="tab" href="#tabAnggaran">💰 Total Anggaran</a></li>
-        <li><a data-toggle="tab" href="#tabJenisBantuan">⚖️ Jenis Bantuan Hukum</a></li>
-        <li><a data-toggle="tab" href="#tabStatistik">📊 Statistik Perkara & Kasus</a></li>
+        <li><a data-toggle="tab" href="#tabJenisBantuan">⚖️ Jenis Bantuan</a></li>
+        <li><a data-toggle="tab" href="#tabStatistik">📊 Jenis Perkara & Kasus</a></li>
+        <li><a data-toggle="tab" href="#tabStatus">📈 Status Terakhir</a></li>
       </ul>
 
       <div class="tab-content" style="margin-top:25px;">
-        
+
         <!-- TAB PETA -->
         <div id="tabPeta" class="tab-pane fade in active">
           <div class="map-loading" id="mapLoader"><div class="spinner"></div></div>
@@ -164,7 +171,7 @@
 
           <!-- LINK GOOGLE SPREADSHEET -->
           <div class="text-center" style="margin-top: 15px;">
-            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRM245t9fPtERqVp3KxtYEKOHs2m_Db8sqSnPJr6IWvowVMu1UHl4trpOMg-6Bs7Y5sdkbwk_J7-pan/pubhtml"
+            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRM245t9fPtERqVp3KxtYEKOHs2m_Db8sqSnPJr6IWvowVMu1UHl4trpOMg-6Bs7Y5sdkbwk_J7-pan/pubhtml" 
               target="_blank" 
               class="btn btn-default"
               style="border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
@@ -172,7 +179,6 @@
             </a>
           </div>
         </div>
-
 
         <!-- TAB ANGGARAN -->
         <div id="tabAnggaran" class="tab-pane fade">
@@ -184,7 +190,7 @@
           <div class="chart-container"><canvas id="chartJenisBantuan"></canvas></div>
         </div>
 
-        <!-- TAB STATISTIK -->
+        <!-- TAB PERKARA -->
         <div id="tabStatistik" class="tab-pane fade">
           <div class="form-group text-center">
             <label for="tahunSelect"><b>Pilih Tahun:</b></label>
@@ -195,6 +201,20 @@
             </select>
           </div>
           <div class="chart-container"><canvas id="chartGabungan"></canvas></div>
+        </div>
+
+        <!-- TAB STATUS -->
+        <div id="tabStatus" class="tab-pane fade">
+          <div class="form-group text-center">
+            <label for="tahunStatus"><b>Pilih Tahun:</b></label>
+            <select id="tahunStatus" class="form-control" style="width:200px;margin:0 auto;">
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025" selected>2025</option>
+            </select>
+          </div>
+          <p class="lead text-center">Distribusi status laporan berdasarkan hasil verifikasi akhir.</p>
+          <div class="chart-container"><canvas id="chartStatusPie"></canvas></div>
         </div>
 
       </div>
@@ -208,10 +228,10 @@
 </footer>
 
 <script>
-  // === Tahun Otomatis ===
+  // Tahun Otomatis
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // === MAP LOADER ===
+  // MAP LOADER
   function hideLoader() {
     document.getElementById("mapLoader").style.display = "none";
     document.getElementById("mapIframe").style.display = "block";
@@ -221,52 +241,87 @@
   const totalAnggaran = { labels: ["2023", "2024", "2025"], data: [4559931200, 4407575000, 2898427500] };
   const jenisBantuan = { labels: ["2023", "2024", "2025"], litigasi: [1253, 1199, 857], nonLitigasi: [299, 243, 172] };
   const dataPerkaraKasus = {
-    "2023": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Pencurian","Pencabulan/Pelecehan"], data: [461, 421, 103, 48, 44] },
-    "2024": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Sajam/Bahan Peledak","Penganiayaan"], data: [396, 390, 86, 61, 42] },
-    "2025": { labels: ["Perceraian Pengadilan Agama","Narkoba","Perlindungan Anak","Pencurian dengan Pemberatan","Pencabulan/Pelecehan"], data: [383, 262, 41, 34, 27] }
+    "2023": { labels: ["Perceraian", "Narkoba", "Perlindungan Anak", "Pencurian", "Pencabulan"], data: [461, 421, 103, 48, 44] },
+    "2024": { labels: ["Perceraian", "Narkoba", "Perlindungan Anak", "Sajam", "Penganiayaan"], data: [396, 390, 86, 61, 42] },
+    "2025": { labels: ["Perceraian", "Narkoba", "Perlindungan Anak", "Pencurian Berat", "Pencabulan"], data: [383, 262, 41, 34, 27] }
   };
 
-  // === CHART 1: Anggaran ===
+  const dataStatus = {
+    "2023": { diterima: 1363, ditolak: 189, belum: 0 },
+    "2024": { diterima: 1277, ditolak: 165, belum: 0 },
+    "2025": { diterima: 660, ditolak: 104, belum: 265 }
+  };
+
+  // === CHART ANGGARAN ===
   new Chart(document.getElementById("chartAnggaran"), {
     type: 'bar',
     data: {
       labels: totalAnggaran.labels,
-      datasets: [{ label: "Total Realisasi Anggaran (Rp)", data: totalAnggaran.data, backgroundColor: ["#007bff","#00b4d8","#0096c7"] }]
+      datasets: [{ label: "Total Realisasi Anggaran (Rp)", data: totalAnggaran.data, backgroundColor: ["#7ba6de","#a3c2f2","#c9daf8"] }]
     },
-    options: { title: { display: true, text: "Total Realisasi Anggaran 2023–2025" }, responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
   });
 
-  // === CHART 2: Jenis Bantuan ===
+  // === CHART JENIS BANTUAN ===
   new Chart(document.getElementById("chartJenisBantuan"), {
     type: 'bar',
     data: {
       labels: jenisBantuan.labels,
       datasets: [
-        { label: "Litigasi", data: jenisBantuan.litigasi, backgroundColor: "#007bff" },
-        { label: "Non-Litigasi", data: jenisBantuan.nonLitigasi, backgroundColor: "#a2d2ff" }
+        { label: "Litigasi", data: jenisBantuan.litigasi, backgroundColor: "#4f81c7" },
+        { label: "Non-Litigasi", data: jenisBantuan.nonLitigasi, backgroundColor: "#c9ccd5" }
       ]
     },
-    options: { title: { display: true, text: "Distribusi Jenis Bantuan Hukum per Tahun" }, responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
   });
 
-  // === CHART 3: Jenis Perkara & Kasus ===
+  // === CHART PERKARA ===
   const ctx = document.getElementById("chartGabungan").getContext("2d");
   let chartGabungan = new Chart(ctx, {
     type: 'bar',
-    data: { labels: dataPerkaraKasus["2025"].labels, datasets: [{ label: "Jumlah Kasus", data: dataPerkaraKasus["2025"].data, backgroundColor: "#007bff" }] },
-    options: {
-      title: { display: true, text: "Top 10 Jenis Perkara & Kasus Tahun 2025" },
-      responsive: true, maintainAspectRatio: false,
-      scales: { x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } }, y: { beginAtZero: true } }
-    }
+    data: { labels: dataPerkaraKasus["2025"].labels, datasets: [{ label: "Jumlah Kasus", data: dataPerkaraKasus["2025"].data, backgroundColor: "#4f81c7" }] },
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
   });
 
   document.getElementById("tahunSelect").addEventListener("change", function() {
     const tahun = this.value;
     chartGabungan.data.labels = dataPerkaraKasus[tahun].labels;
     chartGabungan.data.datasets[0].data = dataPerkaraKasus[tahun].data;
-    chartGabungan.options.title.text = "Top 10 Jenis Perkara & Kasus Tahun " + tahun;
     chartGabungan.update();
+  });
+
+  // === CHART STATUS PIE ===
+  const ctxStatus = document.getElementById("chartStatusPie").getContext("2d");
+  let chartStatus = new Chart(ctxStatus, {
+    type: 'pie',
+    data: {
+      labels: ["Sudah Diverifikasi", "Ditolak", "Belum Diverifikasi"],
+      datasets: [{
+        data: [dataStatus["2025"].diterima, dataStatus["2025"].ditolak, dataStatus["2025"].belum],
+        backgroundColor: ["#6da76d", "#d87373", "#f5d67b"],
+        borderColor: "#fff",
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: "Statistik Status Terakhir Tahun 2025" }
+      }
+    }
+  });
+
+  document.getElementById("tahunStatus").addEventListener("change", function() {
+    const tahun = this.value;
+    chartStatus.data.datasets[0].data = [
+      dataStatus[tahun].diterima,
+      dataStatus[tahun].ditolak,
+      dataStatus[tahun].belum
+    ];
+    chartStatus.options.plugins.title.text = "Statistik Status Terakhir Tahun " + tahun;
+    chartStatus.update();
   });
 </script>
 
